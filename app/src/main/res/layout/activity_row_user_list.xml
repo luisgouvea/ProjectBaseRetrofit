@@ -20,11 +20,11 @@
         android:textSize="16dp"
         android:textStyle="bold"/>
 
-    <!--    <ImageView
+        <ImageView
             android:id="@+id/image_pessoa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher_foreground"
-            android:layout_alignRight="@id/text_name_pessoa" />-->
+            android:layout_alignRight="@id/text_name_pessoa" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder implements View.
     public ListUserViewHolder(View itemView) {
         super(itemView);
         this.nomePessoa = itemView.findViewById(R.id.text_name_pessoa);
-        /*this.photoPessoa = itemView.findViewById(R.id.image_pessoa);*/
+        this.photoPessoa = itemView.findViewById(R.id.image_pessoa);
     }
 
     /**
@@ -33,7 +33,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder implements View.
         // Altera valor
         this.nomePessoa.setText(pessoa.getName());
         this.nomePessoa.setOnClickListener(this);
-        /*this.photoPessoa.setOnClickListener(this);*/
+        this.photoPessoa.setOnClickListener(this);
     }
 
     @Override
