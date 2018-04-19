@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 
 import com.safeweb.recyclerview.projectbaseretrofit.model.User;
-import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListPessoasAdapter;
-import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListPessoasViewHolder;
+import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListUserAdapter;
+import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListUserViewHolder;
 import com.safeweb.recyclerview.projectbaseretrofit.retrofit.implementantion.UserImplementation;
 
 import java.util.ArrayList;
@@ -20,12 +20,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity<T> extends AppCompatActivity implements ListPessoasViewHolder.ClickListener, Callback<T> {
+public class MainActivity<T> extends AppCompatActivity implements ListUserViewHolder.ClickListener, Callback<T> {
 
-    private ViewHolderInfPessoas mViewHolderInfPessoas = new ViewHolderInfPessoas();
-    private ListPessoasAdapter userListAdapter;
+    private ViewHolderInfUser mViewHolderInfUser = new ViewHolderInfUser();
+    private ListUserAdapter userListAdapter;
 
-    private ListPessoasViewHolder.ClickListener listener = this;
+    private ListUserViewHolder.ClickListener listener = this;
 
     private ArrayList<User> listUsers;
     private User user;
@@ -48,25 +48,25 @@ public class MainActivity<T> extends AppCompatActivity implements ListPessoasVie
     private void setupRecyclerView() {
 
         // 1 - Obter a recyclerview
-        this.mViewHolderInfPessoas.mViewRecyclerViewInfPessoas = findViewById(R.id.recyclerViewInfPessoas);
+        this.mViewHolderInfUser.mViewRecyclerViewInfUser = findViewById(R.id.recyclerViewInfUser);
 
         // 2 - Definir adapter passando listagem de users e listener
-        userListAdapter = new ListPessoasAdapter(listUsers, listener);
+        userListAdapter = new ListUserAdapter(listUsers, listener);
 
-        this.mViewHolderInfPessoas.mViewRecyclerViewInfPessoas.setAdapter(userListAdapter);
+        this.mViewHolderInfUser.mViewRecyclerViewInfUser.setAdapter(userListAdapter);
 
-        this.mViewHolderInfPessoas.mViewRecyclerViewInfPessoas.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
+        this.mViewHolderInfUser.mViewRecyclerViewInfUser.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
 
         // 3 - Definir um layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        this.mViewHolderInfPessoas.mViewRecyclerViewInfPessoas.setLayoutManager(linearLayoutManager);
+        this.mViewHolderInfUser.mViewRecyclerViewInfUser.setLayoutManager(linearLayoutManager);
     }
 
 
     @Override
     public void textClicked(View v, int position) {
         User user = listUsers.get(position);
-        Toast.makeText(getApplicationContext(), "Nomee da Pessoa: " + user.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Nome da Pessoa: " + user.getName(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class MainActivity<T> extends AppCompatActivity implements ListPessoasVie
 
     }
 
-    public class ViewHolderInfPessoas {
-        private RecyclerView mViewRecyclerViewInfPessoas;
+    public class ViewHolderInfUser {
+        private RecyclerView mViewRecyclerViewInfUser;
     }
 }

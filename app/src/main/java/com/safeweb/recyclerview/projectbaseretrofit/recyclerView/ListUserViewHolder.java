@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.safeweb.recyclerview.projectbaseretrofit.R;
 import com.safeweb.recyclerview.projectbaseretrofit.model.User;
 
-public class ListPessoasViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ListUserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     // Elemento de interface
     private TextView nomePessoa;
@@ -19,7 +19,7 @@ public class ListPessoasViewHolder extends RecyclerView.ViewHolder implements Vi
     /**
      * Construtor
      */
-    public ListPessoasViewHolder(View itemView) {
+    public ListUserViewHolder(View itemView) {
         super(itemView);
         this.nomePessoa = itemView.findViewById(R.id.text_name_pessoa);
         /*this.photoPessoa = itemView.findViewById(R.id.image_pessoa);*/

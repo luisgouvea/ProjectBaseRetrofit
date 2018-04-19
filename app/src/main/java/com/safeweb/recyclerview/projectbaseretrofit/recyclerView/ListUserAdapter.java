@@ -12,14 +12,14 @@ import com.safeweb.recyclerview.projectbaseretrofit.model.User;
 
 import java.util.List;
 
-public class ListPessoasAdapter extends RecyclerView.Adapter<ListPessoasViewHolder>{
+public class ListUserAdapter extends RecyclerView.Adapter<ListUserViewHolder>{
 
 
     private List<User> mListPessoas;
-    private ListPessoasViewHolder.ClickListener mListener;
+    private ListUserViewHolder.ClickListener mListener;
     // Interface que define as ações
 
-    public ListPessoasAdapter(List<User> tags, ListPessoasViewHolder.ClickListener listener){
+    public ListUserAdapter(List<User> tags, ListUserViewHolder.ClickListener listener){
         this.mListPessoas = tags;
         this.mListener = listener;
     }
@@ -28,7 +28,7 @@ public class ListPessoasAdapter extends RecyclerView.Adapter<ListPessoasViewHold
      * Responsável pela criação de linha
      */
     @Override
-    public ListPessoasViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ListUserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         // Obtém o contexto
         Context context = parent.getContext();
@@ -38,14 +38,14 @@ public class ListPessoasAdapter extends RecyclerView.Adapter<ListPessoasViewHold
         View tagView = inflater.inflate(R.layout.activity_row_user_list, parent, false);
 
         // Passa a ViewHolder
-        return new ListPessoasViewHolder(tagView);
+        return new ListUserViewHolder(tagView);
     }
 
     /**
      * Responsável por atribuir valores após linha criada
      */
     @Override
-    public void onBindViewHolder(ListPessoasViewHolder holder, int position) {
+    public void onBindViewHolder(ListUserViewHolder holder, int position) {
         User pessoa = this.mListPessoas.get(position);
         holder.bindData(pessoa, mListener);
 
