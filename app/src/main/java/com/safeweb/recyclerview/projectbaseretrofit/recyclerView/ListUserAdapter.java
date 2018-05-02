@@ -8,18 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.safeweb.recyclerview.projectbaseretrofit.R;
-import com.safeweb.recyclerview.projectbaseretrofit.model.User;
+import com.safeweb.recyclerview.projectbaseretrofit.model.Usuario;
 
 import java.util.List;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserViewHolder>{
 
 
-    private List<User> mListPessoas;
+    private List<Usuario> mListPessoas;
     private ListUserViewHolder.ClickListener mListener;
     // Interface que define as ações
 
-    public ListUserAdapter(List<User> tags, ListUserViewHolder.ClickListener listener){
+    public ListUserAdapter(List<Usuario> tags, ListUserViewHolder.ClickListener listener){
         this.mListPessoas = tags;
         this.mListener = listener;
     }
@@ -46,7 +46,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserViewHolder>{
      */
     @Override
     public void onBindViewHolder(ListUserViewHolder holder, int position) {
-        User pessoa = this.mListPessoas.get(position);
+        Usuario pessoa = this.mListPessoas.get(position);
         holder.bindData(pessoa, mListener);
 
 

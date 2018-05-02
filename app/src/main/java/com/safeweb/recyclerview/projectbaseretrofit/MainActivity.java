@@ -9,10 +9,14 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.safeweb.recyclerview.projectbaseretrofit.model.User;
+import com.safeweb.recyclerview.projectbaseretrofit.model.TAG;
+import com.safeweb.recyclerview.projectbaseretrofit.model.Usuario;
 import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListUserAdapter;
 import com.safeweb.recyclerview.projectbaseretrofit.recyclerView.ListUserViewHolder;
-import com.safeweb.recyclerview.projectbaseretrofit.retrofit.implementantion.UserImplementation;
+import com.safeweb.recyclerview.projectbaseretrofit.retrofit.APIError;
+import com.safeweb.recyclerview.projectbaseretrofit.retrofit.implementantion.TagImplementation;
+import com.safeweb.recyclerview.projectbaseretrofit.retrofit.implementantion.UsuarioImplementation;
+import com.safeweb.recyclerview.projectbaseretrofit.retrofit.interfaces.util.RequestObjectRetrofit;
 
 import java.util.ArrayList;
 
@@ -20,29 +24,31 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity<T> extends AppCompatActivity implements ListUserViewHolder.ClickListener, Callback<T> {
+public class MainActivity<T> extends AppCompatActivity implements ListUserViewHolder.ClickListener, Callback<T>, RequestObjectRetrofit<T> {
 
     private ViewHolderInfUser mViewHolderInfUser = new ViewHolderInfUser();
     private ListUserAdapter userListAdapter;
 
     private ListUserViewHolder.ClickListener listener = this;
 
-    private ArrayList<User> listUsers;
-    private User user;
+    private ArrayList<Usuario> listUsuarios;
+    private Usuario usuario;
+    private TAG tag;
 
-    private UserImplementation userImplementantion = new UserImplementation();
+    private UsuarioImplementation usuarioImplementantion = new UsuarioImplementation();
+    private TagImplementation tagImplementantion = new TagImplementation();
 
     private Callback<T> requestRetrofit = this;
-
-    private Call<ArrayList<User>> callGetAllUser;
-    private Call<User> callGetUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.callGetAllUser = userImplementantion.getAllUser(requestRetrofit);
-        this.callGetUser = userImplementantion.getUserById(requestRetrofit, 1);
+        //usuarioImplementantion.requestSelectAllObjects(requestRetrofit);
+        //usuarioImplementantion.requestSelectObjectById(requestRetrofit, 1);
+        TAG tagAdd = new TAG();
+        tagAdd.setNome("Direita");
+        tagImplementantion.requestInsertObject(requestRetrofit, tagAdd);
     }
 
     private void setupRecyclerView() {
@@ -51,7 +57,7 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
         this.mViewHolderInfUser.mViewRecyclerViewInfUser = findViewById(R.id.recyclerViewInfUser);
 
         // 2 - Definir adapter passando listagem de users e listener
-        userListAdapter = new ListUserAdapter(listUsers, listener);
+        userListAdapter = new ListUserAdapter(listUsuarios, listener);
 
         this.mViewHolderInfUser.mViewRecyclerViewInfUser.setAdapter(userListAdapter);
 
@@ -65,8 +71,17 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
 
     @Override
     public void textClicked(View v, int position) {
-        User user = listUsers.get(position);
-        Toast.makeText(getApplicationContext(), "Nome da Pessoa: " + user.getName(), Toast.LENGTH_LONG).show();
+        int nextPosition = position++;
+        Usuario usuario = listUsuarios.get(position);
+        Usuario usuarioAbaixo = listUsuarios.get(nextPosition);
+
+        listUsuarios.remove(nextPosition);
+        listUsuarios.remove(position);
+        listUsuarios.add(nextPosition, usuario);
+        listUsuarios.add(position, usuarioAbaixo);
+        this.userListAdapter.notifyDataSetChanged();
+
+        Toast.makeText(getApplicationContext(), "Nome da Pessoa: " + usuario.getName(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -74,24 +89,77 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
         Toast.makeText(getApplicationContext(), "Imagem da pessoa", Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Request retrofit
+     * @param call
+     * @param response
+     */
     @Override
-    public void onResponse(Call<T> call, Response<T> response) {
+    public void onResponse(Call<T> call, retrofit2.Response<T> response) {
         try {
-            userImplementantion.verifyResponse(response);
-            if (call == callGetAllUser) {
-                this.listUsers = userImplementantion.resultGetAllUser();
-                setupRecyclerView();
-            } else if (call == callGetUser) {
-                this.user = userImplementantion.resultGetUser();
-            }
+            requestRetrofit(call, response);
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
+    /**
+     * Request Failure do retrofit
+     * @param call
+     * @param t
+     */
     @Override
     public void onFailure(Call<T> call, Throwable t) {
+        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+    }
 
+
+    @Override
+    public void requestRetrofit(Call<T> call, Response<T> response) {
+        requestUser(call, response);
+        requestTag(call, response);
+    }
+
+    public void requestUser(Call<T> call, Response<T> response) {
+        APIError error = null;
+        String typeResponse = usuarioImplementantion.findResponse(call, response);
+        if (typeResponse != "") {
+            switch (typeResponse) {
+                case "erro":
+                    error = usuarioImplementantion.resultError();
+                    if (error.message() != null) {
+                        Toast.makeText(getApplicationContext(), error.message(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Ocorreu um erro", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case "getAllUsuario":
+                    listUsuarios = usuarioImplementantion.resultSelectAllObject();
+                    setupRecyclerView();
+                    break;
+            }
+        }
+    }
+
+    public void requestTag(Call<T> call, Response<T> response) {
+        APIError error = null;
+        String typeResponse = tagImplementantion.findResponse(call, response);
+        if (typeResponse != "") {
+            switch (typeResponse) {
+                case "erro":
+                    error = tagImplementantion.resultError();
+                    if (error.message() != null) {
+                        Toast.makeText(getApplicationContext(), error.message(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Ocorreu um erro", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case "addTag":
+                    Boolean executou = tagImplementantion.resultInsertObject();
+                    Toast.makeText(getApplicationContext(), "Adicionado a TAG", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
     }
 
     public class ViewHolderInfUser {

@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.safeweb.recyclerview.projectbaseretrofit.R;
-import com.safeweb.recyclerview.projectbaseretrofit.model.User;
+import com.safeweb.recyclerview.projectbaseretrofit.model.Usuario;
 
 public class ListUserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -28,7 +28,7 @@ public class ListUserViewHolder extends RecyclerView.ViewHolder implements View.
     /**
      * Atribui valores aos elementos
      */
-    public void bindData(final User pessoa, ClickListener listner) {
+    public void bindData(final Usuario pessoa, ClickListener listner) {
         clickListner = listner;
         // Altera valor
         this.nomePessoa.setText(pessoa.getName());
