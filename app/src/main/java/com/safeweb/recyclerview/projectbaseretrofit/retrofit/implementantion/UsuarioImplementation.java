@@ -37,8 +37,8 @@ public class UsuarioImplementation implements BaseObjectRequest {
     }
 
     @Override
-    public ArrayList resultSelectAllObject() {
-        return null;
+    public ArrayList<Usuario> resultSelectAllObject() {
+        return listUsuario;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class UsuarioImplementation implements BaseObjectRequest {
         clearObject();
         if (response != null && response.isSuccessful() && response.code() == 200) {
 
-            String url = response.raw().networkResponse().request().url().host();
+            String url = response.raw().networkResponse().request().url().url().toString();
 
             if (url.contains("getUsuario")) {
                 usuario = (Usuario) response.body();

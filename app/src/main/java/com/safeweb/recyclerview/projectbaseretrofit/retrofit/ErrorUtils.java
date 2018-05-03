@@ -10,7 +10,9 @@ import retrofit2.Response;
 public class ErrorUtils {
 
     public static APIError parseError(Response<?> response) {
-        Converter<ResponseBody, APIError> converter = ServiceGenerator.getRetrofit().responseBodyConverter(APIError.class, new Annotation[0]);
+        Converter<ResponseBody, APIError> converter =
+                ServiceGenerator.getRetrofit()
+                        .responseBodyConverter(APIError.class, new Annotation[0]);
 
         APIError error;
 

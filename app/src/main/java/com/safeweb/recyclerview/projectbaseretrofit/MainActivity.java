@@ -44,11 +44,28 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //usuarioImplementantion.requestSelectAllObjects(requestRetrofit);
-        //usuarioImplementantion.requestSelectObjectById(requestRetrofit, 1);
+
+        /**
+            Request base com Retrofit
+         */
+        selectAllUsuarios();
+        //addTagNFC(); // TESTE DE API RETORNANDO ERRO
+        //selectUsuarioById(); //TODO: NAO FUNCIONAL POR CAUSA DA API
+
+    }
+
+    private void selectAllUsuarios() {
+        usuarioImplementantion.requestSelectAllObjects(requestRetrofit);
+    }
+
+    private void addTagNFC() {
         TAG tagAdd = new TAG();
         tagAdd.setNome("Direita");
         tagImplementantion.requestInsertObject(requestRetrofit, tagAdd);
+    }
+
+    private void selectUsuarioById() {
+        //usuarioImplementantion.requestSelectObjectById(requestRetrofit, 1); //TODO: NAO FUNCIONAL POR CAUSA DA API
     }
 
     private void setupRecyclerView() {
@@ -71,26 +88,19 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
 
     @Override
     public void textClicked(View v, int position) {
-        int nextPosition = position++;
         Usuario usuario = listUsuarios.get(position);
-        Usuario usuarioAbaixo = listUsuarios.get(nextPosition);
-
-        listUsuarios.remove(nextPosition);
-        listUsuarios.remove(position);
-        listUsuarios.add(nextPosition, usuario);
-        listUsuarios.add(position, usuarioAbaixo);
-        this.userListAdapter.notifyDataSetChanged();
-
         Toast.makeText(getApplicationContext(), "Nome da Pessoa: " + usuario.getName(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void imageClickedView(View v, int position) {
-        Toast.makeText(getApplicationContext(), "Imagem da pessoa", Toast.LENGTH_LONG).show();
+        Usuario usuario = listUsuarios.get(position);
+        Toast.makeText(getApplicationContext(), "Imagem da pessoa: " + usuario.getName(), Toast.LENGTH_LONG).show();
     }
 
     /**
      * Request retrofit
+     *
      * @param call
      * @param response
      */
@@ -105,6 +115,7 @@ public class MainActivity<T> extends AppCompatActivity implements ListUserViewHo
 
     /**
      * Request Failure do retrofit
+     *
      * @param call
      * @param t
      */
